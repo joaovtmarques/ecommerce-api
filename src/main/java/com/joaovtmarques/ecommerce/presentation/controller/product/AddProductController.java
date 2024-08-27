@@ -12,6 +12,8 @@ import com.joaovtmarques.ecommerce.domain.model.Product;
 import com.joaovtmarques.ecommerce.domain.usecase.product.AddProductUseCase;
 import com.joaovtmarques.ecommerce.presentation.controller.protocols.ControllerProtocol;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/products")
 public class AddProductController implements ControllerProtocol<AddProductDTO, ResponseEntity<Product>> {
@@ -21,7 +23,7 @@ public class AddProductController implements ControllerProtocol<AddProductDTO, R
 
   @Override
   @PostMapping
-  public ResponseEntity<Product> handle(@RequestBody AddProductDTO addProductDTO) {
+  public ResponseEntity<Product> handle(@Valid @RequestBody AddProductDTO addProductDTO) {
     Product product = addProduct.execute(addProductDTO);
 
     return ResponseEntity.status(201).body(product);
