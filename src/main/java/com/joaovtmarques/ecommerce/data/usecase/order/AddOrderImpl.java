@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.joaovtmarques.ecommerce.data.dto.AddOrderDTO;
+import com.joaovtmarques.ecommerce.data.exception.NotFoundException;
 import com.joaovtmarques.ecommerce.domain.model.Customer;
 import com.joaovtmarques.ecommerce.domain.model.Order;
 import com.joaovtmarques.ecommerce.domain.model.Product;
@@ -37,7 +38,7 @@ public class AddOrderImpl implements AddOrderUseCase {
       Optional<Product> productExists = productRepository.findById(productId);
 
       if(productExists.isEmpty()) {
-        throw new Error("Produto {"+productId+"} não encontrado");
+        throw new NotFoundException("Produto {"+productId+"} não encontrado");
       }
 
       products.add(productExists.get());
@@ -47,7 +48,7 @@ public class AddOrderImpl implements AddOrderUseCase {
     Optional<Customer> customerExists = customerRepository.findById(addOrderDTO.customerId());
 
     if(customerExists.isEmpty()) {
-      throw new Error("Cliente {"+addOrderDTO.customerId()+"} não encontrado");
+      throw new NotFoundException("Cliente {"+addOrderDTO.customerId()+"} não encontrado");
     }
 
     Order order = new Order();
