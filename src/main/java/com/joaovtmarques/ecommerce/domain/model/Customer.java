@@ -47,6 +47,7 @@ public class Customer {
   @Column(name = "cpf", columnDefinition = "varchar(11)",  nullable = false)
   private String cpf;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private List<Order> orders;
 
