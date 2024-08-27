@@ -12,6 +12,8 @@ import com.joaovtmarques.ecommerce.domain.model.Order;
 import com.joaovtmarques.ecommerce.domain.usecase.order.AddOrderUseCase;
 import com.joaovtmarques.ecommerce.presentation.controller.protocols.ControllerProtocol;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/orders")
 public class AddOrderController implements ControllerProtocol<AddOrderDTO, ResponseEntity<Order>> {
@@ -21,7 +23,7 @@ public class AddOrderController implements ControllerProtocol<AddOrderDTO, Respo
 
   @Override
   @PostMapping
-  public ResponseEntity<Order> handle(@RequestBody AddOrderDTO addOrderDTO) {
+  public ResponseEntity<Order> handle(@Valid @RequestBody AddOrderDTO addOrderDTO) {
     Order order = addOrder.execute(addOrderDTO);
 
     return ResponseEntity.status(201).body(order);
