@@ -2,6 +2,8 @@ package com.joaovtmarques.ecommerce.domain.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,6 +37,7 @@ public class Category {
   @Column(name = "name", unique = true, nullable = false)
   private String name;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private List<Product> products;
   
