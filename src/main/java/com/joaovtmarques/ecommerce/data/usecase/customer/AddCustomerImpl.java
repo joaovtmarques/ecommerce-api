@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.joaovtmarques.ecommerce.data.dto.AddCustomerDTO;
-import com.joaovtmarques.ecommerce.data.exception.CustomerAlreadyExistsException;
+import com.joaovtmarques.ecommerce.data.exception.AlreadyExistsException;
 import com.joaovtmarques.ecommerce.domain.model.Customer;
 import com.joaovtmarques.ecommerce.domain.usecase.customer.AddCustomerUseCase;
 import com.joaovtmarques.ecommerce.infra.repository.CustomerRepository;
@@ -26,7 +26,7 @@ public class AddCustomerImpl implements AddCustomerUseCase {
     Optional<Customer> customerExists = customerRepository.findByEmail(customer.getEmail());
 
     if(customerExists.isPresent()) {
-      throw new CustomerAlreadyExistsException();
+      throw new AlreadyExistsException();
     }
 
     return customerRepository.save(customer);

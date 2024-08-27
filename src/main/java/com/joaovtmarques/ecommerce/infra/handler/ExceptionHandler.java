@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.joaovtmarques.ecommerce.data.exception.BadRequestException;
-import com.joaovtmarques.ecommerce.data.exception.CustomerAlreadyExistsException;
+import com.joaovtmarques.ecommerce.data.exception.AlreadyExistsException;
 import com.joaovtmarques.ecommerce.data.exception.NotFoundException;
 
 @ControllerAdvice
 public class ExceptionHandler extends ResponseEntityExceptionHandler {
 
-  @org.springframework.web.bind.annotation.ExceptionHandler(CustomerAlreadyExistsException.class)
-  private ResponseEntity<String> userAlreadyExists(CustomerAlreadyExistsException exception) {
+  @org.springframework.web.bind.annotation.ExceptionHandler(AlreadyExistsException.class)
+  private ResponseEntity<String> userAlreadyExists(AlreadyExistsException exception) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
   }
 
