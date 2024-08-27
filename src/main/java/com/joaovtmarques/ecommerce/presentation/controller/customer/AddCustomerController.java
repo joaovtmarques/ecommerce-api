@@ -12,6 +12,8 @@ import com.joaovtmarques.ecommerce.domain.model.Customer;
 import com.joaovtmarques.ecommerce.domain.usecase.customer.AddCustomerUseCase;
 import com.joaovtmarques.ecommerce.presentation.controller.protocols.ControllerProtocol;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/customers")
 public class AddCustomerController implements ControllerProtocol<AddCustomerDTO, ResponseEntity<Customer>> {
@@ -21,7 +23,7 @@ public class AddCustomerController implements ControllerProtocol<AddCustomerDTO,
 
   @Override
   @PostMapping
-  public ResponseEntity<Customer> handle(@RequestBody AddCustomerDTO addCustomerDTO) {
+  public ResponseEntity<Customer> handle(@Valid @RequestBody AddCustomerDTO addCustomerDTO) {
     return ResponseEntity.status(201).body(addCustomer.execute(addCustomerDTO));
   }
 
