@@ -1,5 +1,6 @@
 package com.joaovtmarques.ecommerce.domain.model;
 
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -38,6 +39,8 @@ public class Order {
   private List<Product> products;
   
   private Double totalPrice;
+
+  private Date date;
 
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "customer_id", referencedColumnName = "id")

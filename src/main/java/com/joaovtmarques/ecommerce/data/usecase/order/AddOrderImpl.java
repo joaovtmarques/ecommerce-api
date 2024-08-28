@@ -16,6 +16,7 @@ import com.joaovtmarques.ecommerce.infra.repository.ProductRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.ArrayList;
+import java.util.Date;
 
 @Service
 public class AddOrderImpl implements AddOrderUseCase {
@@ -55,6 +56,7 @@ public class AddOrderImpl implements AddOrderUseCase {
     order.setCustomer(customerExists.get());
     order.setProducts(products);
     order.setTotalPrice(totalPrice);
+    order.setDate(new Date());
 
     return orderRepository.save(order);
   }
