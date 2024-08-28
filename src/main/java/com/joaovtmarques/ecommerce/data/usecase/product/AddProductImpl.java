@@ -32,10 +32,7 @@ public class AddProductImpl implements AddProductUseCase {
       throw new NotFoundException("Categoria não encontrada");
     }
 
-    Product product = new Product();
-    product.setName(addProductDTO.name());
-    product.setPrice(addProductDTO.price());
-    product.setCategory(categoryExists.get());
+    Product product = addProductDTO.toModel(categoryExists.get());
 
     return productRepository.save(product);
   }
