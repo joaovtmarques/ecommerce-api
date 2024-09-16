@@ -46,6 +46,9 @@ public class Product {
   @JoinColumn(name = "category_id", nullable = false, updatable = false)
   private Category category;
 
+  @Column(name = "description", nullable = false)
+  private String description;
+
   @JsonIgnore
   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private List<Image> images;
