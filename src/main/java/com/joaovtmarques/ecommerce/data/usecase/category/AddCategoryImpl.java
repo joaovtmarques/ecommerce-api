@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.joaovtmarques.ecommerce.data.exception.AlreadyExistsException;
+import com.joaovtmarques.ecommerce.data.exception.BadRequestException;
 import com.joaovtmarques.ecommerce.domain.model.Category;
 import com.joaovtmarques.ecommerce.domain.usecase.category.AddCategoryUseCase;
 import com.joaovtmarques.ecommerce.infra.repository.CategoryRepository;
@@ -20,16 +21,20 @@ public class AddCategoryImpl implements AddCategoryUseCase {
   @Transactional
   @Override
   public Category execute(String name) {
-    Optional<Category> categoryExists = categoryRepository.findByName(name);
+    try {
+      Optional<Category> categoryExists = categoryRepository.findByName(name);
 
-    if(categoryExists.isPresent()) {
-      throw new AlreadyExistsException("Uma categoria com esse nome já está cadastrada");
+      if(categoryExists.isPresent()) {
+        throw new AlreadyExistsException("Uma categoria com esse nome já está cadastrada");
+      }
+
+      Category category = new Category();
+      category.setName(name);
+
+      return categoryRepository.save(category); 
+    } catch (Exception e) {
+      throw new BadRequestException(e.getMessage());
     }
-
-    Category category = new Category();
-    category.setName(name);
-
-    return categoryRepository.save(category);
   }
 
 }

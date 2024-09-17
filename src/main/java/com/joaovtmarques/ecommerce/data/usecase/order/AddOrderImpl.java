@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.joaovtmarques.ecommerce.data.dto.AddOrderDTO;
+import com.joaovtmarques.ecommerce.data.exception.BadRequestException;
 import com.joaovtmarques.ecommerce.data.exception.NotFoundException;
 import com.joaovtmarques.ecommerce.domain.model.Customer;
 import com.joaovtmarques.ecommerce.domain.model.Order;
@@ -32,33 +33,37 @@ public class AddOrderImpl implements AddOrderUseCase {
 
   @Override
   public Order execute(AddOrderDTO addOrderDTO) {
-    List<Product> products = new ArrayList<Product>();
-    Double totalPrice = 0D;
+    try {
+      List<Product> products = new ArrayList<Product>();
+      Double totalPrice = 0D;
 
-    for(Long productId:addOrderDTO.productsId()) {
-      Optional<Product> productExists = productRepository.findById(productId);
+      for(Long productId:addOrderDTO.productsId()) {
+        Optional<Product> productExists = productRepository.findById(productId);
 
-      if(productExists.isEmpty()) {
-        throw new NotFoundException("Produto {"+productId+"} não encontrado");
+        if(productExists.isEmpty()) {
+          throw new NotFoundException("Produto {"+productId+"} não encontrado");
+        }
+
+        products.add(productExists.get());
+        totalPrice += productExists.get().getPrice();
       }
 
-      products.add(productExists.get());
-      totalPrice += productExists.get().getPrice();
+      Optional<Customer> customerExists = customerRepository.findById(addOrderDTO.customerId());
+
+      if(customerExists.isEmpty()) {
+        throw new NotFoundException("Cliente {"+addOrderDTO.customerId()+"} não encontrado");
+      }
+
+      Order order = new Order();
+      order.setCustomer(customerExists.get());
+      order.setProducts(products);
+      order.setTotalPrice(totalPrice);
+      order.setDate(new Date());
+
+      return orderRepository.save(order);
+    } catch (Exception e) {
+      throw new BadRequestException(e.getMessage());
     }
-
-    Optional<Customer> customerExists = customerRepository.findById(addOrderDTO.customerId());
-
-    if(customerExists.isEmpty()) {
-      throw new NotFoundException("Cliente {"+addOrderDTO.customerId()+"} não encontrado");
-    }
-
-    Order order = new Order();
-    order.setCustomer(customerExists.get());
-    order.setProducts(products);
-    order.setTotalPrice(totalPrice);
-    order.setDate(new Date());
-
-    return orderRepository.save(order);
   }
 
 }

@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.joaovtmarques.ecommerce.data.exception.BadRequestException;
 import com.joaovtmarques.ecommerce.domain.model.Customer;
 import com.joaovtmarques.ecommerce.domain.usecase.customer.FindCustomerByIdUseCase;
 import com.joaovtmarques.ecommerce.infra.repository.CustomerRepository;
@@ -17,7 +18,11 @@ public class FindCustomerByIdImpl implements FindCustomerByIdUseCase {
 
   @Override
   public Optional<Customer> execute(Long id) {
-    return customerRepository.findById(id);
+    try {
+      return customerRepository.findById(id);
+    } catch (Exception e) {
+      throw new BadRequestException(e.getMessage());
+    }
   }
 
 }
